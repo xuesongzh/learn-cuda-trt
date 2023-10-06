@@ -1,0 +1,81 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		// 1. cmake 配置
+		{
+			"type": "cppbuild",
+			"label": "CMake: 配置",
+			"command": "cmake",
+			"args": [
+				"-DCMAKE_BUILD_TYPE=Debug",
+				"-S .",
+				"-B Build"
+			],
+			"problemMatcher": "$msCompile",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"options": {
+				"cwd": "${workspaceFolder}"
+			}
+		},
+		// 2. cmake 构建
+		{
+			"type": "cppbuild",
+			"label": "CMake: 构建",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"Build"
+			],
+			"problemMatcher": "$msCompile",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"dependsOn": [
+				"CMake: 配置"
+			]
+		},
+		// 3. 删除Build目录
+		{
+			"type": "shell",
+			"label": "删除Build目录",
+			"command": "rm",
+			"args": [
+				"-rf",
+				"Build"
+			],
+			"problemMatcher": "$msCompile",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"options": {
+				"cwd": "${workspaceFolder}"
+			}
+		},
+		// 4. 运行可执行文件
+		{
+			"type": "shell",
+			"label": "运行可执行文件",
+			"command": "./Build/cmake_debug",
+			"problemMatcher": "$msCompile",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"dependsOn": [
+				"CMake: 构建"
+			]
+		}
+		
+	]
+}
