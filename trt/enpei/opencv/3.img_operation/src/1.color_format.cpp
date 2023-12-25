@@ -1,9 +1,9 @@
 // opencv 调整颜色
-#include "opencv2/opencv.hpp"
 #include <iostream>
 
-int main()
-{
+#include "opencv2/opencv.hpp"
+
+int main() {
     // 读取图片
     cv::Mat src = cv::imread("./media/dog.jpg");
     // BGR -> Gray
@@ -17,12 +17,10 @@ int main()
     cv::Mat rgb;
     cv::cvtColor(src, rgb, cv::COLOR_BGR2RGB);
 
-
     // 保存
     cv::imwrite("./output/1.gray.jpg", gray);
     cv::imwrite("./output/1.hsv.jpg", hsv);
     cv::imwrite("./output/1.rgb.jpg", rgb);
-    
 
     return 0;
 }

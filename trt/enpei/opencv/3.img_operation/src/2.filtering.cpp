@@ -1,10 +1,9 @@
 // opencv 图像滤波
-#include "opencv2/opencv.hpp"
 #include <iostream>
 
+#include "opencv2/opencv.hpp"
 
-int main()
-{
+int main() {
     // 读取图片
     cv::Mat src = cv::imread("./media/dog.jpg");
     // 高斯模糊

@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 3.10)
 # 项目信息
 project(opencv_basic_input_output)
 
-
 # 添加opencv库
 find_package(OpenCV REQUIRED)
 

@@ -1,21 +1,21 @@
-#include "opencv2/opencv.hpp"
 #include <iostream>
+
+#include "opencv2/opencv.hpp"
 
 // 初始化模型
 const std::string tensorflowConfigFile = "./weights/opencv_face_detector.pbtxt";
 const std::string tensorflowWeightFile = "./weights/opencv_face_detector_uint8.pb";
 cv::dnn::Net net = cv::dnn::readNetFromTensorflow(tensorflowWeightFile, tensorflowConfigFile);
 
-
 // 检测并绘制矩形框
-void detectDrawRect(cv::Mat &frame)
-{
+void detectDrawRect(cv::Mat &frame) {
     // 获取图像的宽高
     int frameHeight = frame.rows;
     int frameWidth = frame.cols;
 
     // 预处理，resize + swapRB + mean + scale
-    cv::Mat inputBlob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(300, 300), cv::Scalar(104.0, 177.0, 123.0), false, false);
+    cv::Mat inputBlob = cv::dnn::blobFromImage(frame, 1.0, cv::Size(300, 300),
+                                               cv::Scalar(104.0, 177.0, 123.0), false, false);
     // 推理
     net.setInput(inputBlob, "data");
     cv::Mat detection = net.forward("detection_out");
@@ -24,13 +24,11 @@ void detectDrawRect(cv::Mat &frame)
     cv::Mat detectionMat(detection.size[2], detection.size[3], CV_32F, detection.ptr<float>());
 
     // 遍历多个人脸结果
-    for (int i = 0; i < detectionMat.rows; i++)
-    {
+    for (int i = 0; i < detectionMat.rows; i++) {
         // 置信度
         float confidence = detectionMat.at<float>(i, 2);
 
-        if (confidence > 0.2)
-        {
+        if (confidence > 0.2) {
             // 两点坐标
             int l = static_cast<int>(detectionMat.at<float>(i, 3) * frameWidth);
             int t = static_cast<int>(detectionMat.at<float>(i, 4) * frameHeight);
@@ -42,8 +40,7 @@ void detectDrawRect(cv::Mat &frame)
     }
 }
 // 图片测试
-void imageTest()
-{
+void imageTest() {
     // 读取图片
     cv::Mat img = cv::imread("./media/test_face.jpg");
     // 推理
@@ -56,8 +53,7 @@ void imageTest()
 }
 
 // 实时视频流检测
-void videoTest()
-{
+void videoTest() {
     // =========== 摄像头 ===========
     // 先读取camera或文件视频流并显示
     // cv::VideoCapture cap(2);
@@ -77,20 +73,18 @@ void videoTest()
 
     // 构造写入器
     // 写入MP4文件，参数分别是：文件名，编码格式，帧率，帧大小
-    cv::VideoWriter writer("./output/record.mp4", cv::VideoWriter::fourcc('H', '2', '6', '4'), 25, cv::Size(width, height));
+    cv::VideoWriter writer("./output/record.mp4", cv::VideoWriter::fourcc('H', '2', '6', '4'), 25,
+                           cv::Size(width, height));
 
-    if (!cap.isOpened())
-    {
+    if (!cap.isOpened()) {
         std::cout << "Cannot open the video cam" << std::endl;
         // 退出
         exit(1);
     }
     cv::Mat frame;
 
-    while (true)
-    {
-        if (!cap.read(frame))
-        {
+    while (true) {
+        if (!cap.read(frame)) {
             std::cout << "Cannot read a frame from video stream" << std::endl;
             break;
         }
@@ -112,8 +106,7 @@ void videoTest()
     }
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     // 图片测试
     // imageTest();
     // 视频测试

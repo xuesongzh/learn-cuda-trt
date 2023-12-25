@@ -1,9 +1,8 @@
-#include <opencv2/opencv.hpp>
 #include <iostream>
+#include <opencv2/opencv.hpp>
 #include <string>
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     // Ubuntu安装ffmpeg：sudo apt-get install ffmpeg
     // rtsp地址变量
     // 一般main 主码流，sub 子码流
@@ -23,8 +22,7 @@ int main(int argc, char **argv)
     cv::VideoCapture stream3 = cv::VideoCapture(rtsp3, cv::CAP_FFMPEG);
     cv::VideoCapture stream4 = cv::VideoCapture(rtsp4, cv::CAP_FFMPEG);
 
-    if (!stream1.isOpened() || !stream2.isOpened() || !stream3.isOpened() || !stream4.isOpened())
-    {
+    if (!stream1.isOpened() || !stream2.isOpened() || !stream3.isOpened() || !stream4.isOpened()) {
         std::cout << "有视频流未打开" << std::endl;
         return -1;
     }
@@ -39,16 +37,14 @@ int main(int argc, char **argv)
     // 使用namedWindow创建窗口，WINDOW_AUTOSIZE：自动调整窗口大小
     cv::namedWindow("rtsp_demo", cv::WINDOW_AUTOSIZE);
 
-    while (true)
-    {
-        if (!stream1.read(frame1) || !stream2.read(frame2) || !stream3.read(frame3) || !stream4.read(frame4))
-        {
+    while (true) {
+        if (!stream1.read(frame1) || !stream2.read(frame2) || !stream3.read(frame3) ||
+            !stream4.read(frame4)) {
             std::cout << "有视频流未读取" << std::endl;
             continue;
         }
         // 缩放等处理
         cv::resize(frame1, frame1, cv::Size(500, 300));
-        
 
         cv::resize(frame2, frame2, cv::Size(500, 300));
         cv::flip(frame2, frame2, 1);
@@ -58,7 +54,8 @@ int main(int argc, char **argv)
         cv::cvtColor(frame1, frame1, cv::COLOR_GRAY2BGR);
 
         cv::resize(frame4, frame4, cv::Size(500, 300));
-        cv::putText(frame4, "RTSP demo", cv::Point(100, 100), cv::FONT_ITALIC, 1, cv::Scalar(0, 0, 255), 2);
+        cv::putText(frame4, "RTSP demo", cv::Point(100, 100), cv::FONT_ITALIC, 1,
+                    cv::Scalar(0, 0, 255), 2);
         // 拼接
         cv::hconcat(frame1, frame2, H1);
         cv::hconcat(frame3, frame4, H2);
@@ -66,8 +63,7 @@ int main(int argc, char **argv)
 
         cv::imshow("rtsp_demo", V);
 
-        if (cv::waitKey(1) == 27)
-        {
+        if (cv::waitKey(1) == 27) {
             break;
         }
     }
